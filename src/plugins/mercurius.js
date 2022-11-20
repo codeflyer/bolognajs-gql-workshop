@@ -3,8 +3,8 @@
 const path = require('path')
 const mercurius = require('mercurius')
 const fp = require('fastify-plugin')
-const { loadFiles } = require('@graphql-tools/load-files')
-const { makeExecutableSchema } = require('@graphql-tools/schema')
+const {loadFiles} = require('@graphql-tools/load-files')
+const {makeExecutableSchema} = require('@graphql-tools/schema')
 
 const dynamicImport = async (packageName) =>
   new Function(`return import('${packageName}')`)() // eslint-disable-line no-new-func
@@ -22,18 +22,32 @@ const loadSchema = async () => {
         acc[key] = {}
       }
 
-      acc[key] = { ...acc[key], ...value }
+      acc[key] = {...acc[key], ...value}
     })
 
     return acc
   }, {})
 
-  return { schema: makeExecutableSchema({ typeDefs: schema }), resolvers }
+  const loaders = (await loadFiles(
+    path.resolve(__dirname, '../modules/**/loaders.js')
+  )).reduce((acc, loader) => {
+    Object.entries(loader).forEach(([key, value]) => {
+      if (!acc[key]) {
+        acc[key] = {}
+      }
+
+      acc[key] = {...acc[key], ...value}
+    })
+
+    return acc
+  }, {})
+
+  return {schema: makeExecutableSchema({typeDefs: schema}), resolvers, loaders}
 }
 
 module.exports = fp(
   async (fastify, options) => {
-    const { schema, resolvers } = await loadSchema()
+    const {schema, resolvers, loaders} = await loadSchema()
 
     const explain = (await dynamicImport('mercurius-explain'))
 
@@ -44,6 +58,7 @@ module.exports = fp(
       },
       schema,
       resolvers,
+      loaders,
       context: async () => {
         return {
           app: fastify,
