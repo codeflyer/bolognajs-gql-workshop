@@ -4,12 +4,12 @@ type Query {
 
 input FilmListInput {
   page: Int
-  resultPerPage: Int
+  resultPerPage: Int @constraint(type: "number", maximum: 10)
 }
 
 type Film {
   id: ID!
   title: String!
   description: String!
-  categories: [Category]
+  categories: [Category] @auth(requires: USER)
 }
