@@ -1,0 +1,9 @@
+type Query {
+  getFilmList: [Film]
+}
+
+type Film {
+  id: ID!
+  title: String!
+  description: String!
+}
