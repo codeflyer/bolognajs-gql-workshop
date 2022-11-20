@@ -25,16 +25,17 @@ const loadSchema = async () => {
     return acc
   }, {})
 
-  return makeExecutableSchema({ typeDefs: schema, resolvers })
+  return { schema: makeExecutableSchema({ typeDefs: schema }), resolvers }
 }
 
 module.exports = fp(
   async (fastify, options) => {
-    const schema = await loadSchema()
+    const { schema, resolvers } = await loadSchema()
 
     const mercuriusOptions = {
       graphiql: options.graphql.graphiql,
       schema,
+      resolvers,
       context: async () => {
         return {
           app: fastify,
