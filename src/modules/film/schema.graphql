@@ -1,5 +1,10 @@
 type Query {
-  getFilmList: [Film]
+  getFilmList(input: FilmListInput): [Film]
+}
+
+input FilmListInput {
+  page: Int
+  resultPerPage: Int
 }
 
 type Film {
