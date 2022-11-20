@@ -59,6 +59,7 @@ module.exports = fp(
       schema,
       resolvers,
       loaders,
+      cache: true,
       context: async () => {
         return {
           app: fastify,

@@ -6,7 +6,7 @@ module.exports = {
       const offset = (params.input.page || 0) * limit
 
       const query = SQL`
-        SELECT * from film as f
+        SELECT f.title, f.description, fg.category_id, f.film_id as id from film as f
         LEFT JOIN film_category as fg ON fg.film_id = f.film_id
         ORDER BY f.film_id
         LIMIT ${limit}
@@ -19,7 +19,6 @@ module.exports = {
     }
   },
   Film: {
-    id: (parent) => parent.film_id,
     categories: async (parent, params, context, info) => {
       const query = SQL`
         SELECT * FROM category as c 
