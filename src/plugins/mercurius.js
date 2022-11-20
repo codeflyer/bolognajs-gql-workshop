@@ -4,8 +4,8 @@ const path = require('path')
 const mercurius = require('mercurius')
 const fp = require('fastify-plugin')
 const { parse } = require('graphql')
-const {loadFiles} = require('@graphql-tools/load-files')
-const {makeExecutableSchema} = require('@graphql-tools/schema')
+const { loadFiles } = require('@graphql-tools/load-files')
+const { makeExecutableSchema } = require('@graphql-tools/schema')
 const mercuriusAuth = require('mercurius-auth')
 const mercuriusValidation = require('mercurius-validation')
 
@@ -16,8 +16,8 @@ const loadSchema = async () => {
   const schema = [
     parse(mercuriusValidation.graphQLTypeDefs),
     ...await loadFiles(
-    path.resolve(__dirname, '../modules/**/*.graphql')
-  )]
+      path.resolve(__dirname, '../modules/**/*.graphql')
+    )]
 
   const resolvers = (await loadFiles(
     path.resolve(__dirname, '../modules/**/resolvers.js')
@@ -27,7 +27,7 @@ const loadSchema = async () => {
         acc[key] = {}
       }
 
-      acc[key] = {...acc[key], ...value}
+      acc[key] = { ...acc[key], ...value }
     })
 
     return acc
@@ -41,18 +41,18 @@ const loadSchema = async () => {
         acc[key] = {}
       }
 
-      acc[key] = {...acc[key], ...value}
+      acc[key] = { ...acc[key], ...value }
     })
 
     return acc
   }, {})
 
-  return {schema: makeExecutableSchema({typeDefs: schema}), resolvers, loaders}
+  return { schema: makeExecutableSchema({ typeDefs: schema }), resolvers, loaders }
 }
 
 module.exports = fp(
   async (fastify, options) => {
-    const {schema, resolvers, loaders} = await loadSchema()
+    const { schema, resolvers, loaders } = await loadSchema()
 
     const explain = (await dynamicImport('mercurius-explain'))
 
