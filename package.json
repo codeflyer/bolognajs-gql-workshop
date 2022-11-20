@@ -1,0 +1,43 @@
+{
+  "name": "bolognajs-graphql-meetup",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node src",
+    "dev": "nodemon src",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npm run lint:standard",
+    "db:migrate": "node migrate.js",
+    "lint:fix": "standard --fix",
+    "lint:standard": "standard | snazzy"
+  },
+  "keywords": [],
+  "author": "Davide Fiorello",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/autoload": "5.4.1",
+    "@fastify/postgres": "5.1.0",
+    "@fastify/under-pressure": "8.1.0",
+    "@graphql-tools/load-files": "6.6.1",
+    "@graphql-tools/schema": "9.0.9",
+    "close-with-grace": "1.1.0",
+    "env-schema": "5.1.0",
+    "fastify": "4.9.2",
+    "fastify-plugin": "4.3.0",
+    "fluent-json-schema": "4.0.0",
+    "graphql": "16.6.0",
+    "graphql-modules": "2.1.0",
+    "mercurius": "11.3.0",
+    "pg": "8.8.0",
+    "pg-connection-string": "2.5.0",
+    "pino": "8.7.0",
+    "pino-pretty": "9.1.1",
+    "under-pressure": "6.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.20",
+    "postgrator": "7.1.1",
+    "snazzy": "^9.0.0",
+    "standard": "^17.0.0"
+  }
+}
