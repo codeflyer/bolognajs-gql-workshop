@@ -31,6 +31,7 @@
     "lodash": "4.17.21",
     "lru-cache": "7.14.1",
     "mercurius": "11.3.0",
+    "mercurius-auth": "3.0.0",
     "mercurius-explain": "1.3.2",
     "pg": "8.8.0",
     "pg-connection-string": "2.5.0",

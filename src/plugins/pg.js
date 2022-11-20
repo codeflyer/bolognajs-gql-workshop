@@ -5,7 +5,7 @@ async function plugin (server, options) {
   server
     .register(require('@fastify/postgres'), {
       ...options.postgres,
-      max: 1,
+      max: 1
     })
 }
 
