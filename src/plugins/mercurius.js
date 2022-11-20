@@ -6,6 +6,9 @@ const fp = require('fastify-plugin')
 const { loadFiles } = require('@graphql-tools/load-files')
 const { makeExecutableSchema } = require('@graphql-tools/schema')
 
+const dynamicImport = async (packageName) =>
+  new Function(`return import('${packageName}')`)() // eslint-disable-line no-new-func
+
 const loadSchema = async () => {
   const schema = await loadFiles(
     path.resolve(__dirname, '../modules/**/*.graphql')
@@ -32,8 +35,13 @@ module.exports = fp(
   async (fastify, options) => {
     const { schema, resolvers } = await loadSchema()
 
+    const explain = (await dynamicImport('mercurius-explain'))
+
     const mercuriusOptions = {
-      graphiql: options.graphql.graphiql,
+      graphiql: {
+        enabled: true,
+        plugins: [explain.explainGraphiQLPlugin()]
+      },
       schema,
       resolvers,
       context: async () => {
@@ -46,6 +54,8 @@ module.exports = fp(
     }
 
     fastify.register(mercurius, mercuriusOptions)
+
+    fastify.register(explain.default, {})
 
     fastify.get('/sdl', async function () {
       const query = '{ _service { sdl } }'

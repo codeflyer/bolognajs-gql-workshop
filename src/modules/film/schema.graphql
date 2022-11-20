@@ -11,4 +11,5 @@ type Film {
   id: ID!
   title: String!
   description: String!
+  categories: [Category]
 }

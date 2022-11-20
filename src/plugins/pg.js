@@ -4,7 +4,8 @@ const fp = require('fastify-plugin')
 async function plugin (server, options) {
   server
     .register(require('@fastify/postgres'), {
-      ...options.postgres
+      ...options.postgres,
+      max: 1,
     })
 }
 
